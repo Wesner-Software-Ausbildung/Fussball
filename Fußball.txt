@@ -1,0 +1,81 @@
+Fußball
+
+- Attribute, Instanzvariablen, private, Konstruktoren -
+Es ist in mehreren Schritten eine Konsolenanwendung für einen rudimentären Fußballmanager zu implementieren. Ziel der Anwendung ist es, zwei Mannschaften gegeneinander antreten zu lassen und dabei unter Berücksichtigung einiger Einflussparameter zufallsbestimmt das Spielgeschehen einschließlich der Tore zu simulieren. Die Implementierung der Anwendung soll objektorientiert erfolgen.
+In objektorientierten Anwendungen wird der jeweilige Ausschnitt der Realität, den die Anwendung modellieren soll, mithilfe von Objekten abgebildet. Diese Objekte interagieren über den Austausch von Nachrichten miteinander, d.h. sie rufen wechselseitig Methoden voneinander auf. In einem Fußballmanager wären solche Objekte beispielsweise Trainer, die Mannschaften trainieren; Mannschaften, die wiederum aus Spielern wie Torhüter oder Feldspielern bestehen und gegeneinander spielen oder aber auch ein Stadion, in dem Fußballspiele ausgetragen werden. Wie du bereits weißt, werden Objekte aus Klassen mit Hilfe des new-Operators instanziiert. Ein Beispiel wäre die Instanziierung der Klasse GameOfLife:
+GameOfLife game = new GameOfLife();
+Klassen stellen so etwas wie eine Vorlage zur Erzeugung von Objekten dar. Man kann sie auch als Bauplan von Objekten auffassen. Sie definieren über Methoden, welches Verhalten die Objekte dieser Klassen besitzen; definieren also, was ein Client mit einem solchen Objekt anfangen kann. Auch das hast du bereits zur Genüge getan, indem du in den Repositorys zu den Kontrollstrukturen die (vordefinierten) Methoden in den einzelnen Klassen ausimplementiert hast. In der Klasse GameOfLife hast du beispielsweise die Methode simulate() codiert, die das Leben einer Generation von Zellen simuliert. Ein Client kann dieses Verhalten von GameOfLife-Objekten durch Methodenaufruf nutzen:
+game.simulate();
+Klassen legen allerdings nicht nur das Verhalten von Objekten fest, sondern auch deren Eigenschaften. Ein Trainer in einem Fußballmanager hat beispielsweise einen Namen, ein Alter und einen Erfahrungswert beim Trainieren von Mannschaften. Solche Eigenschaften heißen in der objektorientierten Welt Attribute und werden über sogenannte Instanzvariablen realisiert. 
+
+1)	Lege ein neues Javaprojekt mit dem Namen Soccer-Manager an.  Lege im src-Ordner ein Package mit dem Bezeichner de.szut.soccer und darin eine Klasse mit dem Bezeichner Coach an. 
+
+2)	Gib den unten abgebildeten Quellcode ein.
+public class Coach {
+    private String name;
+    private int age;
+    private int experience;
+}
+
+Wie du siehst, sind Eigenschaften oder Attribute einer Klasse nichts anderes als Variablen, die wie immer mit ihrem Datentyp und Bezeichner deklariert werden. Versehen werden sie üblicherweise mit dem Modifizierer private, so dass auf diese so genannten Instanzvariablen von außerhalb der Klasse Coach nicht zugegriffen werden kann. Auf diese Weise wird im Rahmen der Kapselung die Logik der Implementierung eines Objekts nach außen hin verborgen (Geheimnisprinzip), so dass diese Logik später erweitert oder ausgetauscht werden kann, ohne dass andere Module, die die Klasse Coach benutzen, verändert werden müssen. Die Erfahrung des Trainers wird über eine ganze Zahl aus dem Intervall 1 (unerfahren) bis 10 (Trainerfuchs) modelliert. 
+
+3)	Klassen besitzen neben Instanzvariablen und Methoden noch ein drittes Element. Der sogenannte Konstruktor wird beim Instanziieren eines Objektes aufgerufen:
+Coach rehhagel = new Coach();
+Konstruktoren dienen dazu, neue Objekte einer Klasse zu erzeugen bzw. zu „konstruieren“. Sie reservieren den für das zu instanziierende Objekt benötigten Speicher, legen danach im Speicher die entsprechenden Felder an und initialisieren diese. Da jede Klasse im Prinzip nichts anderes darstellt als ein Bauplan zur Erzeugung von Objekten, benötigt jede Klasse mindestens einen Konstruktor, der diesen Bauplan auch tatsächlich anwenden kann. In Java besitzen alle Klassen automatisch einen Standardkonstruktor, der nicht eigens definiert werden muss und der alle Instanzvariablen mit dem Default-Wert initialisiert. Dieser wurde zur Instanziierung des Trainers „rehhagel“ im Beispiel oben verwendet. Der Standardkonstruktor hat folgenden Code:
+public Coach() {
+}
+Wie du siehst, hat er denselben Bezeichner wie die Klasse und ist syntaktisch mit einer Methode vergleichbar, die keinen Rückgabetyp besitzt. Das ist kennzeichnend für alle Konstruktoren. Der Zugriffsmodifikator public wird benötigt, um ein Coach-Objekt von außerhalb der Klasse zu erzeugen. Zusätzlich zur Objektinstanziierung können Konstruktoren auch die Aufgabe übernehmen, die Instanzvariablen des erzeugten Objekts mit Anfangswerten zu belegen. In solchen Fällen erhält der Konstruktor Parameter, deren Werte er dann in die Instanzvariablen speichert. Unsere Klasse Coach soll einen Konstruktor erhalten, der alle Attribute initialisiert:
+public Coach(String name, int age, int experience) {
+    this.name = name;
+    this.age = age;
+    this.experience = experience;
+}
+Das Schlüsselwort this referenziert das aktuelle Objekt, sorgt also dafür, dass der jeweilige Wert aus den Parametern auch in den jeweiligen Instanzvariablen gespeichert wird und nicht im Parameter verbleibt. Da nun explizit ein Konstruktor definiert wurde, ist der Standardkonstruktor nicht mehr erreichbar. Soll es weiterhin einen Standardkonstruktor geben, so müsste er definiert werden. Wir begnügen uns aber mit dem parametrisierten Konstruktor.
+
+4)	Das Attribut experience darf keine Werte außerhalb des Intervalls 1 bis 10 annehmen. Wir könnten das durch entsprechende If-Anweisungen innerhalb des Konstruktors sicherstellen. Das verhindert aber die Wiederverwendbarkeit dieser Logik. Daher lagern wir sie in eine Methode mit der Signatur public int validate(int value) aus, die 10 zurückgibt sofern ihr ein Wert größer 10 und 1 sofern ihr ein Wert kleiner 1 übergeben wird. Liegt der Parameter im Intervall 1 bis 10 wird dieser zurückgegeben.
+
+5)	Rufe die Methode validate() im Konstruktor geeignet auf.  
+
+6)	Zur Ausgabe der Attributwerte auf der Konsole benötigen wir später eine Methode, die das tut. Dazu bietet es sich an, die toString()-Methode zu überschreiben. Diese besitzt jede Klasse zwar automatisch, gibt aber selten sinnvolle Ergebnisse zurück. Überschreibe sie daher wie folgt:
+@Override
+public String toString() {
+    return "\nCoach\n" +
+            "name: " + this.name +
+            "\nage: " + this.age +
+            "\nexperience: " + this.experience;
+}
+Das Schöne an der toString()-Methode besteht darin, dass sie nicht mit dem Objektbezeichner und dem Punktoperator aufgerufen werden muss, sondern der Objektbezeichner direkt in der System.out.println-Anweisung verwendet werden kann:
+statt
+System.out.println(rehhagel.toString());
+System.out.println(rehhagel);
+
+7)	 Implementiere analog zur Klasse Coach die Klasse Player. Dabei sind folgende Anforderungen umzusetzen: Spieler besitzen wie der Trainer einen Namen und ein Alter, darüber hinaus auch eine Stärke, die Härte ihres Torschusses, eine Motivation (alle im Intervall 1-10) und die Anzahl der geschossenen Tore. Stärke, Torschuss und Motivation werden ebenfalls auf einer Skala von 1 bis 10 gemessen. Ein Spieler besitzt die Methode public int shootAtGoal(), die die Schusshärte, mit der der Spieler auf das Tor schießt, als int-Wert zurückgibt. Dabei ist zu berücksichtigen, dass die Härte des Torschusses zufallsbestimmt um max +1 nach oben und max um -2 nach unten von der Torschussfähigkeit des Spielers abweichen kann. Berücksichtige ebenfalls, dass die Torschusshärte nicht kleiner 1 und größer 10 sein kann. Außerdem hat ein Spieler eine Methode public void addGoal(), die die Anzahl der Tore um eins heraufsetzt. Es soll wiederum die Möglichkeit geben, die Attributwerte über die toString()-Methode auf der Konsole auszugeben. Spielerobjekte sollen über einen parametrisierten Konstruktor instanziiert werden können. Bei der Implementierung kannst du dich auch an das unten abgebildete UML-Klassendiagramm halten. Attribute werden in Klassendiagrammen immer im oberen Quadrat angegeben, der Modifizierer private mit einem Minuszeichen dargestellt. Im unteren Bereich werden optional Konstruktoren, auf jeden Fall aber alle Methoden angegeben. Der Modifizierer public wird mit einem Pluszeichen dargestellt, die Rückgabetypen der Methoden werden hinter dem Methodennamen nach einem Doppelpunkt angegeben. Die Hilfsmethode validate()kennst du bereits aus der Klasse Coach. Sie validiert, ob die Attribute und die Torschusshärte in der Methode shootAtGoal() im Intervall von 1 bis 10 liegen. Übernimm den Quellcode aus der Klasse Coach. Das dupliziert zwar den Quellcode. Wir werden aber später ein entsprechendes Refactoring durchführen. 
+	
+8)	Implementiere zum Testen deiner Anwendung eine Klasse SoccerManagerUI mit einer main-Methode. Instanziiere ein Trainer- und ein Spielerobjekt und rufe jeweils die toString()-Methode auf. Rufe auf deinem Spieler ebenfalls die Methode shootAtGoal() auf und gib die ermittelte Torschusshärte auf der Konsole aus. 
+
+9)	Das händische Testen ist durchaus umständlich. Um wirklich alle Fehler ausschließen zu können, die schon in unserer Grundversion auftreten können, müsste man die Klasse SoccerManagerUI sehr umfangreich implementieren: es bräuchte mindestens drei verschiedene Instanziierungen der Klasse Coach, nämlich eine mit einer Erfahrung, die im Intervall von 1 bis 10 liegt, eine, die über 10 und eine, die unter 1 liegt wird. Beim Spieler ergäben sich noch weitere Variationen. Außerdem müsste man die main-Methode häufiger ausführen, um die Methode shootAtGoal() zu testen, nämlich so oft, bis alle drei möglichen Fälle eintreten (Torschuss mit unveränderter, mit nach oben abweichender und nach unten abweichender Härte). Wir wollen daher unsere Klasse automatisiert testen.
+
+10)	Dafür sind folgende Vorarbeiten nötig: a) Lege im Hauptverzeichnis deines Projektes (auf derselben Ebene wie die des Ordners src) einen Ordner mit dem Bezeichner test an, b) markiere diesen als Test-Ressource, indem du ihn mit rechts anklickst, im Kontextmenü Mark Directory as – Test Sources Root auswählst, c) ein Package mit dem Bezeichner de.szut.soccer1 (derselbe Package-Name, in dem deiner Klassen Coach und Player liegen!) und d) eine Klasse mit dem Bezeichner CoachTest anlegst.
+
+11)	Des Weiteren benötigen wir in der Klasse Coach einen Getter für die Erfahrung. Lege diesen an.
+
+12)	Gib in der Klasse CoachTest folgenden Code ein:
+
+@Test
+public void givenExperienceLowerHigher10_WhenValidate_Return10(){
+    Coach rehhagel = new Coach("Rehhagel", 84, 11);
+    assertEquals(10, rehhagel.getExperience());
+}
+
+Die Annotation @Test wird dir als Fehler markiert. Das liegt daran, dass JUnit 5 dem Classpath hinzugefügt werden muss. Stell den Cursor in die Annotation und drücke gleichzeitig Alt+Enter, wähle dann JUnit 5 (nicht JUnit 4) aus. Auch assertEquals wird dir als Fehler markiert. Diese Methode muss auf demselben Weg importiert werden. Danach kannst du den Test ausführen.
+Jeder Unit-Test in Java muss mit der Annotation @Test versehen werden, um die Methode als Test bekannt zu machen. Jeder Test hat automatisch die Signatur public void. Für die Benennung der Tests gibt es viele Konventionen. Im Beispiel wurde die Given-When-Then-Konvention benutzt. Sie gibt die Ausgangssituation, die Methode, die getestet wird und das erwartete Ergebnis an. Du kannst auch eine andere Benennung wählen. Aus ihr sollte aber in jedem Fall eine sprechende Beschreibung des Testfalles hervorgehen. Die Methode assertEquals() ist eine sogenannte Assertion. Sie prüft, ob das erwartete Ergebnis (10) dem entspricht, was getExperience() zurückgibt. Die Reihenfolge der Parameter ist ein wenig gewöhnungsbedürftig: es wird immer erst das erwartete Ergebnis und dann das tatsächliche Ergebnis aus dem Methodenaufruf übergeben. 
+
+13)	Schreibe für die zwei noch offenen Testfälle jeweils einen Unit-Test und führe diese aus: givenExperienceLowerThan10_WhenValidate_Return1()
+und 
+givenExperience7_WhenValidate_Return7 ()
+
+14)	Lege im selben Package wie oben die Klasse PlayerTest an. Wir wollen noch die Methode addGoal() testen. Schreibe dazu einen Test mit dem Bezeichner givenShootGoal_whenAddGoal_ReturnUpdatedNumberOfGoals(), der einen Spieler instanziiert, die Methode addGoal() aufruft und überprüft ob, die Anzahl der Tore um eins erhöht worden ist (hierfür brauchst du einen entsprechenden Getter!). 
+
+15)	Eigentlich müssten wir an dieser Stelle auch die Methode shootAtGoal() testen. Sie besitzt allerdings eine Abhängigkeit zu einem Random-Objekt, das auch noch innerhalb der Methode instanziiert wird. Um diese Methode testen zu können, müssten wir größere Umbauarbeiten am Code vornehmen und Random mocken, was innerhalb einer Einführung in die Objektorientierung zu viel des Guten wäre. Die Funktionsweise der validate-Methode wollen wir hier nicht noch einmal testen. Wie versprochen, wird die Code-Duplizierung ja auch noch refactored.
+
+16)	Lese zur Verfestigung das Infoblatt „01 IB Konstruktoren.docx“.
