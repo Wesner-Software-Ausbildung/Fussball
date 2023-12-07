@@ -1,11 +1,25 @@
 package de.szut.soccer;
-
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CoachTest {
     @Test
-        public void givenExperienceLowerHigher10_WhenValidate_Return10(){
+        public void givenExperienceLowerHigher10_WhenValidate_Return10() {
         Coach rehhagel = new Coach("Rehhagel", 84, 11);
-        assertEquals(10, rehhagel.getExperience()); }
+        assertEquals(10, rehhagel.getExperience());
+    }
 
+    @Test
+    public void givenExperienceLowerThan10_WhenValidate_Return1() {
+        Coach rehhagel = new Coach("Rehhagel", 84, 19);
+        assertEquals(10, rehhagel.getExperience());
+    }
+
+    @Test
+    public void givenExperience7_WhenValidate_Return7 () {
+        Coach rehhagel = new Coach("Rehhagel", 84, 11);
+        assertEquals(10, rehhagel.getExperience());
+    }
 }
+
+
