@@ -79,3 +79,40 @@ givenExperience7_WhenValidate_Return7 ()
 15)	Eigentlich müssten wir an dieser Stelle auch die Methode shootAtGoal() testen. Sie besitzt allerdings eine Abhängigkeit zu einem Random-Objekt, das auch noch innerhalb der Methode instanziiert wird. Um diese Methode testen zu können, müssten wir größere Umbauarbeiten am Code vornehmen und Random mocken, was innerhalb einer Einführung in die Objektorientierung zu viel des Guten wäre. Die Funktionsweise der validate-Methode wollen wir hier nicht noch einmal testen. Wie versprochen, wird die Code-Duplizierung ja auch noch refactored.
 
 16)	Lese zur Verfestigung das Infoblatt „01 IB Konstruktoren.docx“.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+Teil 2
+
+Unser Fußballmanager soll um eine Klasse erweitert werden, die Torhüter modelliert. Ein Torhüter besitzt dieselben Eigenschaften wie ein Spieler (Name, Alter, Stärke, Torschusshärte, Motivation und Anzahl der geschossenen Tore). Ja – auch er könnte Tore schießen, gab es ja schon das ein oder andere Mal… Zusätzlich hat der Torwart aber auch eine Eigenschaft Reaktionsfähigkeit, mit der er Torschüsse abwehrt. Wie bei vielen Eigenschaften des Spielers wird auch diese Eigenschaft durch eine Zahl im Intervall von 1 bis 10 dargestellt. Außerdem besitzt er eine Methode public boolean ballHold(int powerAtGoalKick). Diese Methode ermittelt die Reaktionsfähigkeit des Torhüters, die zufallsbestimmt um 1 nach oben und 1 nach unten abweichen kann, und gibt zurück, ob der Torhüter den Schuss des Spielers gehalten hat. Ist die Reaktion des Torhüters größer oder gleich der übergebenen Torschuss-härte des schießenden Spielers, hält der Torhüter den Schuss und die Methode gibt true zurück, an-dernfalls false.
+
+Bei der Implementierung der Klasse Goalkeeper deckt sich damit ein Großteil des Codes mit der der Klasse Player. Alle Attribute des Players sowie Teile des Konstruktors und der toString()-Methode wä-ren erneut zu implementieren. Um dir Schreibarbeit zu sparen, wäre Copy-Paste zwar eine Hilfe, aller-dings sprechen einige gewichtige Gründe gegen eine solche Codeduplizierung. Ist der duplizierte Quellcode fehlerhaft oder muss später geändert werden, so muss diese Änderung überall in der An-wendung vorgenommen werden, an denen sich der Code wiederholt. Das macht die Wartung der An-wendung nicht nur aufwendiger, weil Stellen vergessen werden können, sondern auch fehleranfälliger.
+
+Die Lösung des Problems besteht darin, die Klassen Player und Goalkeeper durch eine Vererbungsbeziehung zu verknüpfen. Ein Torhüter ist nämlich ein spezieller Spieler: Er besitzt alle Eigen-schaften und Verhaltensweisen eines Spielers und darüber hinaus die nur ihn auszeichnende Reaktionsfähigkeit und das Verhalten, Schüsse auf das Tor hal-ten zu können. In der Programmierung spricht man in einem solchen Fall von ei-ner Erweiterung bzw. Spezialisierung. Man sagt auch, der Torwart erbt vom Spieler, das heißt, er hat all das, was ein Spieler auch hat. Die Klasse Player wird in einer solchen Vererbungshierarchie als Superklasse oder Basisklasse, Goalkeeper als Kindklasse bezeichnet.
+
+1) Kopiere das Package de.szut.soccer und nenne die Kopie de.szut.soccer2.
+
+2) Erstelle eine neue Klasse Goalkeeper. Damit sie von Player erbt, erweitere die Klassendefini-tion um das Schlüsselwort extends und Player:
+
+public class Goalkeeper extends Player{ }
+
+Damit ist die Vererbungshierarchie erstellt. Auch wenn im Quellcode jetzt Fehler angezeigt wer-den. Um diese kümmern wir uns im Folgenden.
+
+3) Deklariere die Instanzvariable reaction, um die Reaktionsfähigkeit des Torwarts beim Abweh-ren von Torschüssen zu modellieren. Die Reaktion wird mit einem ganzzahligen Wert im Intervall von 1 (schlecht) bis 10 (super) angegeben.
+
+4) Implementiere nun die toString()-Methode. Hier wird dir auffallen, dass du keinen Zugriff auf Eigenschaften eines Spielers hast, obwohl du diese ja eigentlich erben willst. Dies liegt am private-Modifikator vor den Eigenschaften der Klasse Player, der den Zugriff auf die Attribute von au-ßerhalb der Klasse Player verbietet. Besser wäre hier der Modifizierer protected, da dieser immer noch vor Zugriff von außen schützt, jedoch den erbenden Klassen den direkten Zugriff auf die Instanzvariablen erlaubt. Ändere also die Zugriffsmodifikatoren der Attribute der Klasse Player von private auf protected!
+
+5) Implementiere die Methode public boolean ballHold(int powerAtGoalKick) mit der in der Einleitung beschriebenen Funktionalität. Damit die Reaktionsfähigkeit des Torhüters in-nerhalb des Intervalls von 1 bis 10 bleibt, nachdem sie zufallsbestimmt angepasst worden ist, be-nötigst du die Methode validate(), die eine ermittelte Reaktionsfähigkeit von 0 auf 1 oder eine von 11 auf 10 setzt. Ändere daher den Modifizierer dieser Methode in der Klasse Player auf protected, damit sie innerhalb der Klasse Goalkeeper verwendet werden kann.
+
+6) Wie die Klasse Player benötigt auch die Klasse Goalkeeper einen Konstruktor. In einer Klassen-hierarchie haben in der Regel Basisklassen und abgeleitete Klassen Konstruktoren. Daraus ergibt sich die Frage, welcher Konstruktor für die Erstellung eines Objektes der abgeleiteten Klasse ver-antwortlich ist. Die Antwort lautet: Der Konstruktor der Superklasse erzeugt den Objektteil der Superklasse, der Konstruktor für die Kindklasse erzeugt den Anteil der Kindklasse. Daher muss der Konstruktor der abgeleiteten Klasse den Konstruktor der Basisklasse aufrufen. Das geschieht mit dem Java-Schlüsselwort super (vgl. Abbildung unten). Der Konstruktor der Klasse Goalkeeper soll parametrisiert sein. Da der Torhüter bei seiner Erzeugung noch kein Tor geschossen hat, soll dieses Attribut automatisch mit 0 initialisiert werden:
+
+public Goalkeeper(String name, int age, int force, int powerAtGoalKick, int motivation, int reaction) {
+super(name, age, force, powerAtGoalKick, motivation, 0);
+this.reaction = reaction;
+}
+
+7) Instanziiere in deiner main-Methode zum Testen einen Torhüter und rufe die toString()-Me-thode in einer Konsolenausgabe auf. Simuliere einen Torschuss und eines Spielers und gib aus, ob der Torhüter den Ball gehalten hat, oder nicht.
+
+Damit ist die Spezialisierung eines Spielers zum Torwart realisiert und getestet. Was ist nun durch die Verwendung einer Vererbungshierarchie gewonnen? Insgesamt lassen sich vier Vorteile festhalten. Durch den Einsatz von Vererbung wurde Codeduplizierung vermieden. Gleiche oder weitestgehend ähnliche Quelltextabschnitte mussten nicht doppelt oder mehrfach geschrieben werden. Dadurch wird eine Anwendung einfacher zu warten, weil eine Änderung an Datenfeldern oder Methoden, die von mehreren Subklassen geteilt werden, nur an einer Stelle vorgenommen werden muss. Diese Stelle ist nun für den Wartungsprogrammierer in der Regel aufgrund der hierarchischen Struktur leicht zu fin-den. Die Wiederverwendbarkeit unseres Codes wird durch Vererbung erhöht. Der Code unserer Klasse Player wurde durch Vererbung für die Klasse Goalkeeper genutzt und kann für andere Arten von Spielern wie Mittelfeldspielern oder Angreifern wiederverwendet werden, indem von Player vererbt wird. Das gilt allgemein: Immer dann, wenn bereits eine Klasse existiert, die den Anforderungen sehr nahe kommt, kann eine Subklasse dieser Klasse geschrieben werden, die den bestehenden Code spe-zialisiert. Viertens war es für uns sehr einfach, die bestehende Anwendung durch den Gebrauch von Vererbung zu erweitern.
+
+8) Lese zur Verfestigung das Infoblatt „02 IB Vererbung.docx“.
