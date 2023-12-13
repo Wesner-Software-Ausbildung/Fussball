@@ -14,7 +14,7 @@ public class Player {
         this.name = name;
         this.age = age;
         this.strength = strength;
-        this.powerAtGoalKick = powerAtGoalKick;
+        this.powerAtGoalKick = validate(powerAtGoalKick);
         this.motivation = motivation;
         this.numberOfGoals = numberOfGoals;
     }
@@ -71,7 +71,7 @@ public class Player {
         return false;
     }
 
-    public int validate(int value) {
+    protected int validate(int value) {
         //return value < 1 ? 1 : value > 10 ? 10 : value;
         if (value < 1) {
             return 1;
