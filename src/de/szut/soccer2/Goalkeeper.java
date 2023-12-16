@@ -8,5 +8,16 @@ public class Goalkeeper extends Player {
         this.reaction = reaction;
     }
 
+    @Override
+    public String toString () {
+        return "\nGoalkeeper\n" +
+                "name: " + this.name +
+                "\nage: " + this.age +
+                "\nstrength: " + this.strength +
+                "\npowerAtGoalKick: " + this.powerAtGoalKick +
+                "\nmotivation: " + this.motivation +
+                "\nnumberOfGoals: " + this.numberOfGoals +
+                "\nreaction: " + this.reaction;
+    }
 
 }

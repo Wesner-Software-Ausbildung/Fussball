@@ -55,8 +55,20 @@ public class Player {
     public void setNumberOfGoals(int numberOfGoals) {
         this.numberOfGoals = numberOfGoals;
     }
+
+    protected int validate(int value) {
+        //return value < 1 ? 1 : value > 10 ? 10 : value;
+        if (value < 1) {
+            return 1;
+        }
+        else if (value > 10) {
+            return 10;
+        }
+        return value;
+    }
+
     public int shootAtGoal() {
-        int result = getPowerAtGoalKick() - (int) (random() * 3 - 2);
+        int result = getPowerAtGoalKick() - (int) (Math.random() * 3 - 2);
         return validate(result);
     }
     public void addGoal() {
@@ -71,16 +83,6 @@ public class Player {
         return false;
     }
 
-    protected int validate(int value) {
-        //return value < 1 ? 1 : value > 10 ? 10 : value;
-        if (value < 1) {
-            return 1;
-        }
-        else if (value > 10) {
-            return 10;
-        }
-        return value;
-    }
     @Override
     public String toString() {
         return "\nPlayer\n" +
@@ -88,6 +90,7 @@ public class Player {
                 "\nage: " + this.age +
                 "\nstrength: " + this.strength +
                 "\npowerAtGoalKick: " + this.powerAtGoalKick +
+                "\nnumberOfGoals: " + this.numberOfGoals +
                 "\nmotivation: " + this.motivation;
     }
 

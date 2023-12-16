@@ -16,12 +16,10 @@ public class SoccerManagerUI {
         System.out.println(tryGoal);
         System.out.println(coach);
 
-            //Hier habe ich nicht verstanden, wie kann ich Punkt 7 machen. Diesen Punkt befindet sich im Aufgabe Teil 2 in txt Daten.
-            //Aber jetzt hat den Code funktioniert, aber zeigt nicht, ob Goal war oder nein.
-
         //System.out.print(sergei);
-        //int goal = sergei.ballHold(int powerAtGoalKick);
+        //int goal = sergei.ballHold(Goalkeeper);
         //System.out.print(goal);
+
         System.out.println(sergei);
         tryGoal = sergei.shootAtGoal();
         System.out.print(tryGoal);
