@@ -1,4 +1,4 @@
-package de.szut.soccer3;
+package de.szut.soccer4;
 
     public abstract class Person {
 
