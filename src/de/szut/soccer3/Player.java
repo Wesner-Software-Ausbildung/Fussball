@@ -1,11 +1,13 @@
 package de.szut.soccer3;
 
 public class Player {
+
     protected String name;
+
     protected int age;
     protected int strength;
     protected int powerAtGoalKick;
-    protected int motivation;
+    public int motivation;
     protected int numberOfGoals;
 
     public Player (String name, int age, int strength, int powerAtGoalKick, int motivation, int numberOfGoals) {
@@ -32,17 +34,11 @@ public class Player {
     public int getStrength() {
         return strength;
     }
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
     public int getPowerAtGoalKick() {
         return powerAtGoalKick;
     }
-    public void setPowerAtGoalKick(int powerAtGoalKick) {
-        this.powerAtGoalKick = powerAtGoalKick;
-    }
     public int getMotivation() {
-        return motivation;
+        return this.motivation;
     }
     public void setMotivation(int motivation) {
         this.motivation = motivation;

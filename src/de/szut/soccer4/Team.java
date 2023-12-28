@@ -19,4 +19,13 @@ public class Team {
     public void addPlayer (Player player) {
         this.squad.add(player);
     }
+
+    public int getTotalMotivation () {
+        int sum = 0;
+        for (int i = 0; i < this.squad.size(); i++) {
+            sum += this.squad.get(i).getMotivation();
+        }
+        return this.squad.size();
+    }
+
 }
