@@ -40,9 +40,6 @@ public class Player {
     public int getMotivation() {
         return this.motivation;
     }
-    public void setMotivation(int motivation) {
-        this.motivation = motivation;
-    }
     public int getNumberOfGoals() {
         return numberOfGoals;
     }

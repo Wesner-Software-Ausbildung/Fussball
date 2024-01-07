@@ -82,6 +82,7 @@ givenExperience7_WhenValidate_Return7 ()
 
 
 -----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
 Teil 2
 
 Unser Fußballmanager soll um eine Klasse erweitert werden, die Torhüter modelliert. Ein Torhüter besitzt dieselben Eigenschaften wie ein Spieler (Name, Alter, Stärke, Torschusshärte, Motivation und Anzahl der geschossenen Tore). Ja – auch er könnte Tore schießen, gab es ja schon das ein oder andere Mal… Zusätzlich hat der Torwart aber auch eine Eigenschaft Reaktionsfähigkeit, mit der er Torschüsse abwehrt. Wie bei vielen Eigenschaften des Spielers wird auch diese Eigenschaft durch eine Zahl im Intervall von 1 bis 10 dargestellt. Außerdem besitzt er eine Methode public boolean ballHold(int powerAtGoalKick). Diese Methode ermittelt die Reaktionsfähigkeit des Torhüters, die zufallsbestimmt um 1 nach oben und 1 nach unten abweichen kann, und gibt zurück, ob der Torhüter den Schuss des Spielers gehalten hat. Ist die Reaktion des Torhüters größer oder gleich der übergebenen Torschuss-härte des schießenden Spielers, hält der Torhüter den Schuss und die Methode gibt true zurück, an-dernfalls false.
@@ -118,6 +119,7 @@ Damit ist die Spezialisierung eines Spielers zum Torwart realisiert und getestet
 8) Lese zur Verfestigung das Infoblatt „02 IB Vererbung.docx“.
 
 --------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
 Teil 3
 
 Unser Code weist nach wie vor Code-duplizierung auf. Mit dem Namen und das Alter haben Trainer und Spieler gemeinsame Eigenschaften, die jeweils in den Klassen Coach und Player implementiert worden sind. Die Lösung dafür heißt Generalisie-rung. Das bedeutet, die gemeinsa-men Eigenschaften beider Klassen werden in einer neuen Klasse zusam-mengefasst. Auch dabei handelt es sich um eine Vererbung, also um eine Ist-Ein-Beziehung: Ein Spieler ist eine Person; ein Trainer ist eine Per-son. Die Klassen Player und Coach erben also von einer neu zu erstellenden Klasse Person. Unsere Vererbungshierarchie bekommt auf diese Klasse, die nur dazu dient, Subklassen gemeinsame Attribute zu vererben. Die im Folgenden zu implementierenden Änderungen können anhand des abgebildeten Klassendiagramms nachvollzogen werden.
@@ -147,3 +149,151 @@ public abstract class Person { … }
 Schaue noch einmal auf das Klassendiagramm auf der vorigen Seite. Dort ist zu erkennen, dass der Bezeichner Person kursiv geschrieben ist. Kursive Klassenbezeichner markieren in UML-Klassen-diagrammen abstrakte Klassen!
 
 9) Teste abschließend dein Refactoring, indem du den bereits fertigen Code aus der main-Funktion ausführst. Versuche dann die Klasse Person zu instanziieren. Und – lässt sich eine Instanz erzeu-gen? Hoffentlich nicht!
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+Teil 4
+
+Mit der Abbildung der am Spiel beteiligten Personen ist es leider nicht getan. Für die Simulation benö-tigen wir zwei Mannschaften, die in einem Spiel auf einander treffen. Zu einer Mannschaft gehören ein Trainer, ein Torwart und zehn Feldspieler. Die Mannschaft ist also auch ein Objekt, das wir realisie-ren müssen. Sie steht mit den Klassen Coach, Goalkeeper und Player in Beziehung. Diese Art von Be-ziehung zwischen zwei Objekten, wie wir sie hier haben, nennt man Hat-Ein-Beziehung, spezieller As-soziation. Man sagt auch: „Eine Mannschaft hat einen Trainer." Im abgebildeten Klassendiagramm sind beide Seiten der Assoziationsbeziehung mit Kardinalitäten beschrieben. Eine Mannschaft hat zehn oder mehr Spieler und umgekehrt gehört ein Spieler immer nur zu einer Mannschaft. Dabei soll in unserer Anwendung lediglich die Mannschaft ihre Spieler kennen, was mit dem Pfeil in Richtung der Klasse Player gekennzeichnet wird. Kennen heißt in diesem Zusammenhang, dass Objekte der Klasse Team Methoden auf ihren Player-Objekten aufrufen werden, was umgekehrt, also dass ein Spieler Methoden seines Mannschaftsobjekts aufrufen wird, nicht nötig sein wird.
+
+1) Kopiere das Package de.szut.soccer3 und nenne die Kopie de.szut.soccer4.
+
+2) Erstelle in diesem Package eine neue Klasse mit dem Bezeichner Team.
+
+3) Die eingezeichnete Assoziationsbeziehung besagt, dass eine Mannschaft einen Trainer besitzt und sie ihren Trainer kennt. Diese Beziehung wird über ein Attribut in der Klasse Team vom Typ Coach realisiert. Analog geschieht das mit der Beziehung der Mannschaft zum Torwart. Füge der Klasse Team neben dem Attribut für ihren Namen eines für den Trainer und den Torwart hinzu (vgl. Klas-sendiagramm oben).
+
+4) Eine Mannschaft hat während eines Spiels zwar immer nur zehn Feldspieler auf dem Rasen, da unsere Anwendung aber auch Ersatzspieler berücksichtigen soll, können es auch mehr sein. Des-wegen speichern wir die Spieler nicht etwa in einem Array der Größe 10, sondern in einer Liste. Listen speichern Objektdatentypen und können beliebig groß werden. Java bietet verschiedene Typen von Listen an, die sich in ihrer Speicherstrategie unterscheiden. Wir verwenden eine Array-List. Bei der Deklaration wird der ArrayList mitgegeben, was für Objekte später in ihr gespeichert werden sollen:
+
+private ArrayList<Player> squad;
+
+5) Implementiere den Konstruktor für die Klasse Team. Der Konstruktor soll den Namen der Mann-schaft, den Trainer und den Torwart als Parameter erhalten und speichern.
+
+Achte darauf, dass die Liste der Spieler bisher nur deklariert wurde. Würde man nun versuchen sie zu benutzen und z.B. einen Spieler in ihr speichern, bekäme man eine Fehlermeldung (NullPointerExcep-tion). Füge dem Konstruktor daher folgende Zeile hinzu:
+
+this.squad=new ArrayList<Player>();
+
+Da die Spielerliste nach außen nicht sichtbar ist, wird noch eine public-Methode benötigt, die der Spie-lerliste einen Spieler hinzufügt:
+
+public void addPlayer(Player player) { this.squad.add(spieler) }
+
+So ist die Liste immer noch vor Zugriff von außen geschützt, aber dennoch können Spieler hinzugefügt werden.
+
+Exkurs
+
+Bei der Beziehung zwischen der Klasse Team und der Klasse ArrayList handelt es sich um eine besondere Form einer Hat-Ein-Bezie-hung: eine Ganzes-Teil-Beziehung, in der das Teil vom Ganzen existenzabhängig ist. Bezie-hungen, die diese Eigenschaft haben, nennt man Kompositionen. Das Ganze ist die Klasse Team. Sie beinhaltet als ein Teil von sich ein Listenobjekt. Diese ist insofern von Team existenzabhängig, weil sie sich genauso wie das Ganze, also das jeweilige Team-Objekt, verhält: wird es kopiert, wird auch die Liste kopiert; wird es gelöscht, wird auch die Liste gelöscht… Am Quellcode erkennt man eine Kompositionsbeziehung daran, dass das Ganze, also die Klasse Team, für die Instan-ziierung seiner Teile verantwortlich ist. Das passiert hier im Konstruktor. Bei Assoziationsbeziehungen werden Konstruktoren oder Methoden bereits existierende Objekte übergeben!
+
+6) Erstelle in der Klasse Team eine Methode zum Ermitteln der Motivation der Gesamtmannschaft. Nenne die Methode getTotalMotivation().
+
+Die Motivation der Gesamtmannschaft ergibt sich dabei als Mittelwert der Motivationswerte aller Spieler, inklusive Torwart. Dieser Wert wird immer auf die nächste ganze Zahl abgerundet.
+
+Ein paar Tipps dazu:
+
+· Alle Spieler durchlaufen
+
+o Du wirst dazu eine Schleife benötigen, mit der du schrittweise auf jeden einzelnen Spieler zugreifst. Um dies mit den dir bekannten Mitteln zu bauen benötigst du zwei Dinge:
+
+§ Gesamtlänge der Liste: this.squad.size()
+
+§ Wie greife ich auf einen einzelnen Spieler der Liste zu:
+
+· this.squad.get(0) à der erste Spieler
+
+· this.squad.get(1) à der zweite Spieler
+
+· usw.
+
+o Jetzt müsstest du nur eine Schleife bauen, die z.B. eine Variable index schrittweise hoch-zählt (erst 0, dann 1, dann 2, etc).
+
+o Zu Beginn eines jeden Durchlaufs holst du dir anhand der Variablen index das entspre-chende Spielerobjekt aus der Liste.
+
+· Zugriff auf die Motivation eines Spielers
+
+o Momentan können wir die Motivation eines Spielers nur über die toString()-Me-thode (indirekt) ermitteln. Einen direkten Zugriff hast du nicht, da das Attribut private ist. Du könntest das Attribut natürlich mittels public öffentlich sichtbar machen, aber das widerspräche dem Prinzip der Datenkapselung.
+
+o Erstelle also einen sogenannten Getter für das Attribut motivation in der Klasse Player:
+
+public class Player { private int motivation; …. public int getMotivation() { return this.motivation; } }
+
+o Durch ihn kann man von außen auf den Inhalt des Attributs zugreifen. Du hättest ihn na-türlich auch direkt bei der Erstellung der Klasse Player anlegen können, aber es ist durchaus guter Stil erst dann Getter (und evtl. auch Setter) anzulegen, wenn man sie be-nötigt.
+
+7) Ergänze die Klasse Team in ähnlicher Weise mit einer Methode zum Ermitteln der Spielstärke der Gesamtmannschaft. Nenne diese Methode entsprechend getTotalForce(). Die Gesamt-stärke soll dieses Mal allerdings nur aus den Spielern ermittelt werden, die auch tatsächlich auf dem Platz stehen, d.h. dem Torwart und den ersten zehn Spieler der Liste.
+
+8) Ergänze die Klasse Team um eine toString()-Methode. Ihr Rückgabewert könnte zum Beispiel so aussehen:
+
+***Mannschaft*** Trainer: Terzic Torhüter: Bürki Spieler: Meunier Spieler: Akanji Spieler: Hummels Spieler: Guerreiro Spieler: Witsel Spieler: Brandt Spieler: Sancho Spieler: Bellingham Spieler: Reus Spieler: Haaland
+
+Tipps:
+
+· Du wirst für die Spieler eine Schleife benötigen!
+
+· Du wirst einen weiteren Getter erstellen müssen, um an die Namen des Trainers und der Spieler zu kommen.
+
+· Wenn du in einem String die Zeichen \n benutzt, bewirkt das bei der Ausgabe einen Zeilenum-bruch.
+
+System.out.println("Hallo\nWelt\n!"); à
+
+· Beginne damit, eine Variable String result="***Mannschaft***\n"; zu definieren. Die-ser fügst du dann Stück für Stück die weiteren Infos hinzu. Z.B. result = result +"Trainer: "+this.coach.getName()+"\n";
+
+9) Teste deinen Code, indem du in deiner Programm-Klasse der main-Methode folgenden Code hin-zufügst:
+
+Coach coach = new Coach("Terzic", 38, 5); Goalkeeper goalkeeper = new Goalkeeper("Bürki", 30, 7, 2, 10, 7); Team dortmund = new Team("Borussia Dortmund", coach, goalkeeper); dortmund.addPlayer(new Player("Meunier", 29, 7, 5, 8, 0)); dortmund.addPlayer(new Player("Akanji", 25, 8, 6, 8, 0)); dortmund.addPlayer(new Player("Hummels", 31, 9, 5, 8, 0)); dortmund.addPlayer(new Player("Guerreiro", 26, 8, 9, 8, 0)); dortmund.addPlayer(new Player("Witsel", 31, 9, 6, 8, 0)); dortmund.addPlayer(new Player("Brandt", 24, 9, 8, 8, 0)); dortmund.addPlayer(new Player("Sancho", 20, 10, 8, 8, 0)); dortmund.addPlayer(new Player("Bellingham", 17, 7, 7, 7, 0)); dortmund.addPlayer(new Player("Reus", 31, 10, 8, 8, 0)); dortmund.addPlayer(new Player("Haaland", 20, 9, 9, 8, 0)); System.out.println(dortmund.toString()); System.out.println("Mannschaftsstärke: " + dortmund.getTotalForce()); System.out.println("Motivation: "+ dortmund.getTotalMotivation());
+
+Dies sollte folgende Ausgabe bewirken:
+
+***Mannschaft***
+
+Trainer: Terzic
+
+Torhüter: Bürki
+
+Spieler: Meunier
+
+Spieler: Akanji
+
+Spieler: Hummels
+
+Spieler: Guerreiro
+
+Spieler: Witsel
+
+Spieler: Brandt
+
+Spieler: Sancho
+
+Spieler: Bellingham
+
+Spieler: Reus
+
+Spieler: Haaland
+
+Mannschaftsstärke: 8
+
+Motivation: 8
+
+10) Effektiver als über die Konsole können die Methoden getTotalMotivation() und getTo-talForce() wiederum über Unit-Tests getestet werden. Schreibe daher eine Klasse TeamTest und implementiere jeweils einen Unit-Test, um die Methoden zu testen. Tipp: Deine Tests könnten ganz ähnlich wie der unter 9) abgebildete Quellcode aussehen. Die println-Anweisungen sind le-diglich durch den jeweiligen Methodenaufruf und durch eine geeignete Assertion zu ersetzen.
+
+11) Deine Tests weisen nun einiges an Codeduplizierung auf: Der Code zum Aufbau des Testarrange-ments, also die Instanziierung des Trainers, des Torhüters, der Spieler und der Mannschaft, sowie das Hinzufügen zur Mannschaft, sind in beide Tests gleich. Diese Codeduplizierung kann wie folgt eliminiert werden:
+
+public class TeamTest { private Team dortmund; @BeforeEach public void setUp(){ //Arrange Coach coach = new Coach("Terzic", 38, 5);
+
+Goalkeeper goalkeeper = new Goalkeeper("Bürki", 30, 7, 2, 10, 7); dortmund = new Team("Borussia Dortmund", coach, goalkeeper); dortmund.addPlayer(new Player("Meunier", 29, 7, 5, 8, 0)); … } @Test public void testGetTotalMotivation(){ //Act int totalMotivation = dortmund.getTotalMotivation(); //Assert assertEquals(8, totalMotivation); } … }
+
+In einem Fußballspiel spielt die Heimmannschaft gegen eine Aus-wärtsmannschaft. An einem Fußballspiel sind also zwei Mann-schaften beteiligt. Die Klasse Game, die in unserer Anwendung ein Fußballspiel modelliert, braucht Zugriff auf die am Spiel be-teiligten Mannschaften, weswegen sie beide Mannschaften in Instanzvariablen referenziert. Außer-dem speichert sie die von beiden Mannschaften erzielten Treffer.
+
+12) Implementiere die Klasse Game mit ihrer Assoziationsbeziehung zur Klasse Team und den beiden weiteren Instanzvariablen. Implementiere dabei einen Konstruktor, der die am Spiel beteiligten Mannschaften übergeben bekommt.
+
+13) Die toString-Methode liefert einen String der Begegnung nach folgenden Muster zurück:
+
+Borussia Dortmund - Werder Bremen
+
+Da das Attribut name in der Klasse Team mit dem Modifizierer private versehen ist, musst du in der Klasse Team einen entsprechenden Getter bereitstellen.
+
+14) In der Spielklasse benötigen wir je eine Methode zum Hochzählen der Tore der Heim- und eine zum Hochzählen der Tore der Gastmannschaft. Die jeweilige Methode wird dann bei jedem Treffer aufgerufen.
+
+15) Teste abschließend deine Anwendung mithilfe der Klasse SoccerManagerUI. Erstelle eine zweite Mannschaft. Dafür kannst du den abgebildeten Quellcode kopieren:
+
+coach = new Coach("Kohfeld", 38, 9); goalkeeper = new Goalkeeper("Pavlenka", 28, 6, 2, 10, 6); Team werder = new Team("Werder Bremen", coach, goalkeeper); werder.addPlayer(new Player("Gebre Selassie", 34, 7, 6, 8, 0)); werder.addPlayer(new Player("Friedl", 22, 6, 6, 8, 0)); werder.addPlayer(new Player("Veljkovic", 24, 6, 5, 8, 0)); werder.addPlayer(new Player("Augustinsson", 26, 7, 5, 7, 0)); werder.addPlayer(new Player("Mbom", 20, 6, 6, 8, 0)); werder.addPlayer(new Player("Eggestein", 24, 8, 6, 8, 0)); werder.addPlayer(new Player("Füllkrug", 27, 8, 9, 8, 0)); werder.addPlayer(new Player("Osako", 30, 7, 8, 8, 0));
+
+werder.addPlayer(new Player("Rashica", 24, 8, 8, 8, 0)); werder.addPlayer(new Player("Bittencourt", 27, 7, 7, 8, 0));
+
+Erstelle nun ein Spiel, das diese beiden Mannschaften spielen. Sorge dafür, dass im Spiel einige Tore fallen und lasse dir das Ergebnis auf der Konsole ausgeben
