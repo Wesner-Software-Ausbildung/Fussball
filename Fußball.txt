@@ -297,3 +297,90 @@ coach = new Coach("Kohfeld", 38, 9); goalkeeper = new Goalkeeper("Pavlenka", 28,
 werder.addPlayer(new Player("Rashica", 24, 8, 8, 8, 0)); werder.addPlayer(new Player("Bittencourt", 27, 7, 7, 8, 0));
 
 Erstelle nun ein Spiel, das diese beiden Mannschaften spielen. Sorge dafür, dass im Spiel einige Tore fallen und lasse dir das Ergebnis auf der Konsole ausgeben
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+Teil 5
+Nun sind alle für ein Fußballspiel wichtigen Klassen erzeugt. Was jetzt noch fehlt, ist die Spielsimula-tion, das sogenannte Gameplay. Das Gameplay enthält die komplette Spiellogik, d.h., welcher Spieler aus welcher Mannschaft schießt wann auf's Tor, welche Mannschaft erzielt wann ein Tor etc. Wichtig ist, dass die Logik in einer Klasse gekapselt wird, damit die Spiellogik schnell und einfach durch eine andere ersetzt werden kann. Wäre die Spiellogik auf die sogenannten Business-Klassen wie Team, Player, Game etc. verteilt, so beträfe eine Änderung der Spiellogik mehrere Klassen. Der Aufwand einer Änderung wäre dann höher, die Wahrscheinlichkeit von fehlerhaften Nebeneffekten größer und die Wartbarkeit der Anwendung entsprechend geringer.
+
+1) Kopiere das Package de.szut.soccer4 und nenne die Kopie de.szut.soccer5.
+
+2) Erstelle im Package soccer5 eine neue Klasse mit dem Bezeichner Gameplay. Beachte dabei, dass diese Klasse keine main-Methode enthält!
+
+Instanzvariablen haben für jedes instanziierte Objekt einen eigenen Wert. Man sagt dazu, ein Objekt besitzt einen ganz bestimmten Status; d.h. jedes Attribut hat eine bestimmte Ausprägung, in denen es sich von anderen Objekten derselben Klasse unterscheiden kann. Jeder Spieler hat beispielsweise ei-nen Namen, aber eben einen ganz bestimmten Namen, der sich von denen anderer Spieler unterschei-det. Bei der Dauer eines Fußballspiels ist das anders. Jedes Fußballspiel hat - von der Nachspielzeit abgesehen - dieselbe Länge von 90 Minuten. Es wäre also absurd diese 90 Minuten für jedes Fußball-spiel erneut abzuspeichern. Attribute, die nicht ein einzelnes Objekt, sondern die Gesamtheit aller Ob-jekte einer Klasse beschreiben, nennt man Klassenvariablen. Das Schlüsselwort static bewirkt, dass das Attribut für alle Objekte nur einmal angelegt wird.
+
+Da die Spielzeit eines Fußballspiels immer 90 Minuten beträgt, sich also nicht ändert, kann dieses At-tribut als Konstante angelegt werden, so dass der Wert sich zur Laufzeit des Programms nicht mehr ändern kann. Das wird durch das Schlüsselwort final sichergestellt. Konstanten sollten immer groß geschrieben werden, um direkt klar zu machen, dass es sich nicht um normale Variablen handelt.
+
+3) Für unsere Spiellogik benötigen wird drei konstante Klassenvariablen, die die Spiellänge, die maxi-male Nachspielzeit und die maximale Zeit speichern, die bis zur nächsten Spielaktion vergehen darf: Erstelle diese wie unten abgebildet in der Klasse Gameplay.
+
+private static final int PLAYING_TIME = 90; private static final int MAX_ADDITIONAL_TIME=5; private static final int MAX_DURATION_UNTIL_NEXT_ACTION = 15;
+
+Bei den Aktionen, die wir betrachten wollen, beschränken wir uns auf Torschüsse. Fouls, Seitenaus etc. bleiben unbeachtet, könnten später aber bei Bedarf hinzugefügt werden.
+
+4) Unsere Spiellogik braucht Zugriff auf das Spiel, das sie simuliert. Füge daher eine Instanzvariable vom Typ Game, die über den Konstruktor von Gameplay gesetzt wird.
+
+5) Welche Mannschaft die nächste Aktion durchführt, wird auf Basis der Mannschaftsstärke ermit-telt. Der Mannschaftswert ermittelt sich dabei als Produkt aus der Stärke und Motivation der Mannschaft und der Erfahrung des Trainers. Zu diesem Wert wird ein Zufallswert zwischen -3 und +3 hinzuaddiert. Die Mannschaftsstärke beträgt aber in jedem Fall mindestens 1. Implementiere eine private Methode public int calculateForceOfTheTeam(Team team), die für eine Mannschaft den Mannschaftswert als Ganzzahl ermittelt. Beachte dabei, dass du aktuell noch keinen Zugriff auf das Trainerobjekt der Mannschaft hast. Implementiere also noch den entspre-chenden Getter in der Klasse Team. Außerdem benötigst du einen Getter für die Erfahrung des Trainers in der Klasse Coach!
+
+Hinweis für die nächsten Aufgaben: Falls bestimmte Daten der Objekte (z.B. der Name einer Person, der Torwart einer Mannschaft, etc.) nicht zugänglich sind, sollten entsprechende Getter erstellt wer-den!
+
+6) Die einzige Aktion, die wir in unserem Programm auswerten, ist der Torschuss. Die Logik dafür haben wir bereits in den Klassen Player mit der Methode shootAtGoal() und in der Klasse Goalkeeper in der Methode ballHold() implementiert. Nun binden wir sie in eine Spielszene ein. Implementiere dafür eine Methode private void doGameAction(Player player, Goalkeeper goalkeeper, int minute, Team team), die folgendes tut:
+
+- Sie gibt zunächst die Minute auf der Konsole aus, in der die Spielaktion stattfindet.
+
+- Sie gibt den Textbaustein „Chance für“ + Mannschaftsname auf der Konsole aus.
+
+- Sie gibt den Textbaustein Spielername + zieht ab auf der Konsole aus.
+
+- Wenn der Spieler ein Tor schießt, wird die Anzahl der Tore seiner Mannschaft in der Klasse Game hochgezählt, die Anzahl der geschossenen Tore des Spielers hochgezählt und „Tor!!!“ + Spielstand + Spielername + Anzahl seiner insgesamt geschossenen Tore auf der Konsole ausgegeben. Ein Beispiel wäre:
+
+23. Minute: Chance fuer Borussia Dortmund ... Reus zieht ab TOR!!! 1 : 0 Reus(1)
+
+Scheitert der Spieler am Torhüter, gibt die Methode private void doGameAction(Player player, Goalkeeper goalkeeper, int minute, Team team) das Scheitern nach folgendem Muster auf der Konsole aus:
+
+79. Minute: Chance fuer Borussia Dortmund ... Akanji zieht ab Pavlenka pariert glanzvoll.
+
+7) Um den Spielspaß ein wenig zu erhöhen, sollen die Spielaktionen mit ein wenig Verzögerung auf der Konsole ausgegeben werden. Dafür realisieren wir eine Methode delay():
+
+private void delay(){ try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); } }
+
+Die Methode sleep() der Klasse Thread versetzt den aktuellen Thread in den Ruhezustand. Wie lange das geschieht, hängt von den Millisekunden ab, die sleep() als Parameter mitgege-ben werden. Da der Aufruf von sleep() eine InterruptedException auslösen kann, muss der Aufruf in einem try-catch-Block stattfinden.
+
+8) Nun fehlt nur noch die Methode, die das Spiel ausführt. Bei ihr handelt es sich um die öffentliche Methode public void play().
+
+- Sie zeigt zunächst die Begegnung auf der Konsole an.
+
+- Bevor ein Spiel startet, wird festgelegt, wie lang das Spiel dauert. Dabei spielt der Zufall mit, denn ein Spiel dauert mindestens die Spielzeit und maximal die Spielzeit plus der maximalen Nachspiel-zeit.
+
+- Vor jeder Aktion muss ermittelt werden, wann diese Aktion stattfindet. Zwischen zwei Aktionen vergeht immer mindestens eine Minute und maximal die anfangs festgelegte maximale Dauer zwi-schen zwei Aktionen.
+
+- Das Spiel läuft also in einer Schleife, die so lange läuft, wie die Minutenzahl kleiner als die ermit-telte Spieldauer ist. Dabei wird die Minutenzahl immer um den Minutenwert erhöht, der bis zur nächsten Aktion verstreicht.
+
+- Bei jeder Aktion wird zunächst bestimmt, welche Mannschaft die Aktion ausführt. Dafür werden jeweils die Mannschaftswerte ermittelt und eine Zufallszahl zwischen 0 und der Summe beider Mannschaftswerte bestimmt. Übersteigt dieser Zufallswert den Mannschaftswert der Heimmann-schaft, so führt die Gastmannschaft die Aktion aus, ansonsten die Heimmannschaft.
+
+- Die die Aktion ausführende Mannschaft bestimmt zufällig einen Spieler (keinen Torwart), der die Aktion ausführen soll. Dieser führt dann die gewünschte Aktion (den Torschuss) aus. Erstelle hier-für eine Methode public Player getRandomPlayer()in der Klasse Team. Diese Me-thode soll einen zufälligen Spieler aus der Spielerliste zurückgeben. Um die Aktion durchzuführen - also die Methode doGameAction() geeignet aufrufen zu können -, muss sich play() den Torhüter der anderen Mannschaft geben lassen.
+
+- Nach dem Ausführen der Aktion wird das Spiel durch Aufruf von delay() verzögert, ehe die Minute der neuen Aktion bestimmt wird.
+
+- Ist das Spiel beendet, gibt play() das auf der Konsole nach folgendem Muster bekannt:
+
+Das Spiel ist aus! Borussia Dortmund - Werder Bremen 2 : 2
+
+9) Teste nun dein Programm, indem du die Klasse SoccerManagerUI ein neues Gameplay-Ob-jekt instanziierst und auf ihm play() aufrufst.
+
+10) Lies zur Festigung das Infoblatt „05 IB Klassenvariablen und Klassenmethoden.docx“.
+
+Erweiterungen
+
+Dein Fußballmanager kann nun um vielfältige Aspekte erweitert werden:
+
+- Neben dem Endergebnis könnte die Klasse Game auch den Spielverlauf, der bisher lediglich auf der Konsole ausgegeben wird, speichern, um ihn nochmals verarbeiten zu können.
+
+- Die Spiellogik könnte dahingehend erweitert werden, dass Stürmer häufiger eine Torchance erhal-ten als Abwehrspieler.
+
+- Gegentore könnten sich während des Spielverlaufs auf die Motivation einer Mannschaft auswir-ken.
+
+- Der Spielverlauf könnte durch Fouls, gelben und roten Karten ergänzt werden, was sich wiederum auf die Mannschaftsstärke auswirken dürfte.
+
+- Trainer können ihre Mannschaften trainieren, was Auswirkungen auf die Stärke und Motivation der einzelnen Spieler und der Mannschaft haben kann.
+
+- usw.
