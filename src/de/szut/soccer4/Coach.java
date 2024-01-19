@@ -1,31 +1,14 @@
 package de.szut.soccer4;
 
-public class Coach {
-    private String name;
-    private int age;
+import de.szut.soccer3.Person;
+
+public class Coach extends Person {
+
     private int experience;
 
     public Coach(String name, int age, int experience) {
-        this.name = name;
-        this.age = age;
-        this.experience = validate(experience) ;
-    }
-
-    public String getName(){
-
-        return name;
-    }
-    public void setName (String name) {
-
-        this.name = name;
-    }
-    public int getAge() {
-
-        return age;
-    }
-    public void setAge (int age) {
-
-        this.age = age;
+        super(name, age);
+        this.experience = validate(experience);
     }
     public int getExperience () {
 

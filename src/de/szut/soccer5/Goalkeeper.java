@@ -15,6 +15,11 @@ public class Goalkeeper extends Player {
         }
         return false;
     }
+
+    public int getReaction() {
+        return this.reaction;
+    }
+
     @Override
     public String toString () {
         return "\nGoalkeeper\n" +

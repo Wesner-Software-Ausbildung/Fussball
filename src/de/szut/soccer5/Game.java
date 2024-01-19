@@ -51,4 +51,12 @@ public class Game {
     public String getScore() {
         return goalsHome + "-" + goalsAway;
     }
+
+    public void incrementTeamScore(Team team) {
+        if (team == home) {
+            goalsHome++;
+        } else if (team == away) {
+            goalsAway++;
+        }
+    }
 }

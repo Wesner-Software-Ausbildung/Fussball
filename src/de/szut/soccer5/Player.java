@@ -92,4 +92,7 @@ public class Player {
                 "\nmotivation: " + this.motivation;
     }
 
+    public void incrementGoals() {
+        numberOfGoals++;
+    }
 }

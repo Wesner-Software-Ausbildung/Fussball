@@ -67,8 +67,8 @@ public class Player {
     }
 
     public boolean ballHold(int powerAtGoalKick){
-        int result = validate(getStrength() - (int) (Math.random()* 3 -2));
-        if (result > powerAtGoalKick) {
+        int result = validate(getStrength() + (int) (Math.random()* 1 - 1));
+        if (result >= powerAtGoalKick) {
             return true;
         }
         return false;
@@ -77,12 +77,17 @@ public class Player {
     @Override
     public String toString() {
         return "\nPlayer\n" +
-                "name: " + this.name +
-                "\nage: " + this.age +
-                "\nstrength: " + this.strength +
-                "\npowerAtGoalKick: " + this.powerAtGoalKick +
-                "\nnumberOfGoals: " + this.numberOfGoals +
-                "\nmotivation: " + this.motivation;
+                "Name: " + this.name +
+                "\nAge: " + this.age +
+                "\nStrength: " + this.strength +
+                "\nPowerAtGoalKick: " + this.powerAtGoalKick +
+                "\nNumberOfGoals: " + this.numberOfGoals +
+                "\nMotivation: " + this.motivation;
+    }
+
+    public void scoreGoal() {
+        addGoal();
+        System.out.println(this.name + " hat ein Tor geschossen! Jetzt hat er " + this.numberOfGoals + " Tor!");
     }
 
 }

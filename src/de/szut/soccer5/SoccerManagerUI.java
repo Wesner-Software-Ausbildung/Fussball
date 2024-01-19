@@ -54,25 +54,10 @@ public class SoccerManagerUI {
 
         System.out.println('\n'+"Spielstand: "+ game.getScore());
 
-        //System.out.println('\n'+"Starke: "+ team.getCalculateForceOfTheTeam());
+        System.out.println('\n'+"Starke: "+ dortmund.calculateForceOfTheTeam());
+        System.out.println('\n'+"Starke: "+ werder.calculateForceOfTheTeam());
 
-
-
-
-      /*  System.out.print(rikardo);
-        int tryGoal = rikardo.shootAtGoal();
-        System.out.println(tryGoal);
-        System.out.print(anthonio);
-        tryGoal = anthonio.shootAtGoal();
-        System.out.println(tryGoal);
-        System.out.println(coach);
-
-        //System.out.print(sergei);
-        //int goal = sergei.ballHold(Goalkeeper);
-        //System.out.print(goal);
-
-        System.out.println(sergei);
-        tryGoal = sergei.shootAtGoal();
-        System.out.print(tryGoal); */
+        Gameplay gameplay = new Gameplay(game);
+        gameplay.play();
     }
 }

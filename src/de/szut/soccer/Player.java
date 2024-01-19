@@ -81,4 +81,5 @@ public class Player {
                 "\nmotivation: " + this.motivation;
     }
 
+
 }

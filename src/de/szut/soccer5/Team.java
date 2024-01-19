@@ -17,6 +17,9 @@ public class Team {
         this.squad = new ArrayList <Player> ();
     }
 
+    public String getName() {
+        return name;
+    }
     public void addPlayer (Player player) {
         this.squad.add(player);
     }
@@ -41,7 +44,7 @@ public class Team {
         return this.coach;
     }
 
-    public int calculateForceOfTheTeam(Team team) {
+    public int calculateForceOfTheTeam() {
         int teamStrength = getTotalForce();
         int teamMotivation = getTotalMotivation();
         int coachExperience = this.coach.getExperience();
@@ -51,12 +54,20 @@ public class Team {
         return Math.max(teamForce, 1);
     }
 
-
     @Override
     public String toString() {
         return "***Team***\n" +
                 "Coach: " + coach.getName() + "\n" +
                 "Goalkeeper: " + goalkeeper.getName() + "\n" +
                 "Team: " + squad.toString() + "\n";
+    }
+
+    public Goalkeeper getGoalkeeper() {
+        return this.goalkeeper;
+    }
+
+    public Player getRandomPlayer() {
+        Random rand = new Random();
+        return this.squad.get(rand.nextInt(this.squad.size()));
     }
 }

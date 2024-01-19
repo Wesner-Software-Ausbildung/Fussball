@@ -71,13 +71,14 @@ public class Player {
         int result = getPowerAtGoalKick() - (int) (Math.random() * 3 - 2);
         return validate(result);
     }
+
     public void addGoal() {
         this.numberOfGoals++;
     }
 
     public boolean ballHold(int powerAtGoalKick){
-        int result = validate(getStrength() - (int) (Math.random()* 3 -2));
-        if (result > powerAtGoalKick) {
+        int result = validate(getStrength() + (int) (Math.random()* 1 - 1));
+        if (result >= powerAtGoalKick) {
             return true;
         }
         return false;
@@ -94,4 +95,8 @@ public class Player {
                 "\nmotivation: " + this.motivation;
     }
 
+    public void scoreGoal() {
+        addGoal();
+        System.out.println(this.name + " hat ein Tor geschossen! Jetzt hat er " + this.numberOfGoals + " Tor!");
+    }
 }
